@@ -1,3 +1,5 @@
+import com.mkuczera.RNReactNativeHapticFeedbackPackage;
+
 package com.rollthedice
 
 import android.app.Application

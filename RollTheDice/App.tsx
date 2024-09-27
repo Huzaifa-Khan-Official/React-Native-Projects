@@ -1,5 +1,6 @@
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native'
-import React, { PropsWithChildren } from 'react'
+import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from 'react-native'
+import React, { PropsWithChildren, useState } from 'react'
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 
 import DiceOne from "./assets/One.png"
 import DiceTwo from "./assets/Two.png"
@@ -12,6 +13,11 @@ type DiceProps = PropsWithChildren<{
   imageUrl: ImageSourcePropType
 }>
 
+const options = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false,
+};
+
 const Dice = ({ imageUrl }: DiceProps): JSX.Element => {
   return (
     <View>
@@ -21,9 +27,51 @@ const Dice = ({ imageUrl }: DiceProps): JSX.Element => {
 }
 
 const App = (): JSX.Element => {
+  const [diceImage, setDiceImage] = useState<ImageSourcePropType>(DiceOne);
+
+  const rollDiceOnTap = () => {
+    let randomNumber = Math.floor((Math.random() * 6) + 1);
+
+    switch (randomNumber) {
+      case 1:
+        setDiceImage(DiceOne);
+        break;
+      case 2:
+        setDiceImage(DiceTwo);
+        break;
+      case 3:
+        setDiceImage(DiceThree);
+        break;
+      case 4:
+        setDiceImage(DiceFour);
+        break;
+      case 5:
+        setDiceImage(DiceFive);
+        break;
+      case 6:
+        setDiceImage(DiceSix);
+        break;
+
+      default:
+        setDiceImage(DiceOne);
+        break;
+    }
+
+    ReactNativeHapticFeedback.trigger("impactHeavy", options);
+  }
+
   return (
-    <View>
-      <Text>App</Text>
+    <View style={styles.container}>
+      <Dice imageUrl={diceImage} />
+
+      <Pressable
+        onPress={rollDiceOnTap}
+      >
+        <Text style={styles.rollDiceBtnText}>
+          Roll The Dice
+        </Text>
+      </Pressable>
+
     </View>
   )
 }
@@ -43,6 +91,7 @@ const styles = StyleSheet.create({
   diceImage: {
     width: 200,
     height: 200,
+    marginBottom: 15
   },
   rollDiceBtnText: {
     paddingVertical: 10,
