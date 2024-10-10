@@ -1,5 +1,5 @@
 import { Dimensions, FlatList, Image, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TrackPlayer, { Event, Track, useTrackPlayerEvents } from 'react-native-track-player';
 import { playListData } from '../constant';
 import SongInfo from '../components/SongInfo';
@@ -10,32 +10,35 @@ const { width } = Dimensions.get("window");
 
 const MusicPlayer = () => {
     const [track, setTrack] = useState<Track | null>();
-    useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], async event => {
-        if (typeof event.track === 'number') {
-            switch (event.type) {
-                case Event.PlaybackActiveTrackChanged:
-                    const playingTrack = await TrackPlayer.getTrack(event.track)
-                    setTrack(playingTrack)
-                    break;
 
+    useEffect(() => {
+        (
+            async () => {
+                const currentTrack = await TrackPlayer.getTrack(0); // Set the first track
+                setTrack(currentTrack);
             }
-        }
-    }
-    )
+        )()
 
-    const renderArtWork = () => {
+    }, [])
+
+    useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], async event => {
+        setTrack(event.track);
+    })
+
+    const renderArtWork = ({ item }: { item: Track }) => {
         return (
             <View style={styles.listArtWrapper}>
                 <View style={styles.albumContainer}>
-                    {track?.artwork && (
+                    {item.artwork && (
                         <Image
                             style={styles.albumArtImg}
-                            source={{ uri: track?.artwork?.toString() }}
+                            source={{ uri: item.artwork?.toString() }}
+                            resizeMode="center"
                         />
                     )}
                 </View>
             </View>
-        )
+        );
     }
 
     return (
@@ -43,7 +46,7 @@ const MusicPlayer = () => {
             <FlatList
                 horizontal
                 data={playListData}
-                renderItem={renderArtWork}
+                renderItem={(song) => renderArtWork(song)}
                 keyExtractor={song => song.id.toString()}
             />
 
@@ -75,5 +78,6 @@ const styles = StyleSheet.create({
     albumArtImg: {
         height: '100%',
         borderRadius: 4,
+        resizeMode: 'cover',
     },
 })
