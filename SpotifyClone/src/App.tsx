@@ -1,6 +1,7 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, StatusBar, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { setupPlayer, addTrack } from '../musicPlayerServices'
+import MusicPlayer from './screens/MusicPlayer';
 
 const App = () => {
   const [isPlayerReady, setIsPlayerReady] = useState(false);
@@ -28,8 +29,9 @@ const App = () => {
   }
 
   return (
-    <View> 
-      <Text>App</Text>
+    <View style={styles.container}>
+      <StatusBar barStyle={"light-content"} />
+      <MusicPlayer />
     </View>
   )
 }
