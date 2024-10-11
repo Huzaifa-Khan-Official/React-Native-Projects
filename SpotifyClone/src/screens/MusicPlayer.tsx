@@ -15,7 +15,7 @@ const MusicPlayer = () => {
         (
             async () => {
                 const currentTrack = await TrackPlayer.getTrack(0); // Set the first track
-                setTrack(currentTrack);
+                setTrack(track || currentTrack);
             }
         )()
 
@@ -25,14 +25,14 @@ const MusicPlayer = () => {
         setTrack(event.track);
     })
 
-    const renderArtWork = ({ item }: { item: Track }) => {
+    const renderArtWork = () => {
         return (
             <View style={styles.listArtWrapper}>
                 <View style={styles.albumContainer}>
-                    {item.artwork && (
+                    {track?.artwork && (
                         <Image
                             style={styles.albumArtImg}
-                            source={{ uri: item.artwork?.toString() }}
+                            source={{ uri: track?.artwork?.toString() }}
                             resizeMode="center"
                         />
                     )}
@@ -43,12 +43,9 @@ const MusicPlayer = () => {
 
     return (
         <View style={styles.container}>
-            <FlatList
-                horizontal
-                data={playListData}
-                renderItem={(song) => renderArtWork(song)}
-                keyExtractor={song => song.id.toString()}
-            />
+            {
+                renderArtWork()
+            }
 
             <SongInfo track={track} />
             <SongSlider />

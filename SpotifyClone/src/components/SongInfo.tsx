@@ -14,7 +14,7 @@ const SongInfo = ({ track }: SongInfoProps) => {
                     {track?.title}
                 </Text>
                 <Text style={styles.artist}>
-                    {track?.artist} . {track?.album}
+                    {track?.artist} | {track?.album}
                 </Text>
             </View>
         </View>
