@@ -17,9 +17,9 @@ const Home = ({ navigation }: HomeProps) => {
 
                 // onPress={() => navigation.navigate("Details")}
 
-                onPress={() => navigation.push('Details', {
-                    productId: "86"
-                })}
+                // onPress={() => navigation.push('Details', {
+                //     productId: "86"
+                // })}
 
             />
         </View>
