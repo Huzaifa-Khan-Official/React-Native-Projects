@@ -19,7 +19,7 @@ type LoginUserAccount = {
     password: string;
 }
 
-class AppwriteService {
+class Appwrite {
     account;
 
     constructor() {
@@ -98,4 +98,4 @@ class AppwriteService {
     }
 }
 
-export default AppwriteService
+export default Appwrite
