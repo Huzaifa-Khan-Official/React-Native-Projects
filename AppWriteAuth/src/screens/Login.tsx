@@ -31,6 +31,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
               text: "Logged in successfully!",
               duration: Snackbar.LENGTH_SHORT
             })
+            navigation.navigate('Home')
           }
         })
         .catch(e => setEmail("Incorrect password"))

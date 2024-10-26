@@ -20,6 +20,8 @@ export const Router = () => {
                 setIsLoading(false);
                 if (response) {
                     setIsLoggedIn(true);
+                    console.log("response ==>", response);
+                    console.log("isLogedIN ==>", isLoggedIn);
                 }
             })
             .catch(_ => {
