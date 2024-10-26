@@ -1,5 +1,4 @@
-import { View, Text } from 'react-native'
-import React, { createContext, FC, PropsWithChildren, useState } from 'react'
+import React, { createContext, FC, PropsWithChildren, useEffect, useState } from 'react'
 
 import Appwrite from './service'
 
@@ -15,10 +14,17 @@ export const AppwriteContext = createContext<AppContextType>({
     setIsLoggedIn: () => { }
 })
 
+const appwriteInstance = new Appwrite();
+
 export const AppwriteProvider: FC<PropsWithChildren> = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        console.log("AppwriteProvider - isLoggedIn changed:", isLoggedIn);
+    }, [isLoggedIn]);
+
     const defaultValue = {
-        appwrite: new Appwrite(),
+        appwrite: appwriteInstance,
         isLoggedIn,
         setIsLoggedIn
     }

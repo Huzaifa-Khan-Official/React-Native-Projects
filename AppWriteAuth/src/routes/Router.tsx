@@ -14,30 +14,26 @@ export const Router = () => {
     const { appwrite, isLoggedIn, setIsLoggedIn } = useContext(AppwriteContext);
 
     useEffect(() => {
-        appwrite
-            .getCurrentUser()
-            .then(response => {
-                setIsLoading(false);
-                if (response) {
-                    setIsLoggedIn(true);
-                    console.log("response ==>", response);
-                    console.log("isLogedIN ==>", isLoggedIn);
+        (
+            async () => {
+                try {
+                    const response = await appwrite.getCurrentUser();
+                    if (response) {
+                        setIsLoggedIn(true);
+                        setIsLoading(false);
+                    }
+                } catch (error) {
+                    setIsLoading(false);
+                    setIsLoggedIn(false);
                 }
-            })
-            .catch(_ => {
-                setIsLoading(false);
-                setIsLoggedIn(false);
-            })
+            }
+        )()
     }, [appwrite, setIsLoggedIn])
-
-    if (isLoading) {
-        return <Loading />;
-    }
 
     return (
         <NavigationContainer>
             {
-                isLoggedIn ? <AppStack /> : <AuthStack />
+                isLoading ? <Loading /> : isLoggedIn ? <AppStack /> : <AuthStack />
             }
         </NavigationContainer>
     )
